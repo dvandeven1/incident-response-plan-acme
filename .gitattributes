@@ -1,2 +1,104 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# 🛡️ Incident Response Plan (IRP) – ACME Athletics
+
+**Prepared by:** Dante Vandeven  
+**Date:** June 17, 2025  
+**Version:** 1.0
+
+---
+
+## 📌 1. Overview
+
+This Incident Response Plan (IRP) is designed to provide a structured approach for identifying, responding to, and recovering from cybersecurity incidents at ACME Athletics, a fictional sports technology company focused on athlete data, wearable tech, and performance analytics.
+
+---
+
+## 🚨 2. Objectives
+
+- Detect and contain security incidents quickly  
+- Minimize damage and recovery time  
+- Maintain trust with athletes, partners, and staff  
+- Document all actions for audit and learning purposes
+
+---
+
+## 🔐 3. Scope
+
+This plan applies to all ACME Athletics digital assets, including:  
+- Internal servers and cloud infrastructure  
+- Athlete performance databases  
+- Employee email and mobile devices  
+- Partner APIs and third-party services
+
+---
+
+## 👥 4. Response Team
+
+| Role            | Name / Title              | Responsibility                        |
+|-----------------|---------------------------|----------------------------------------|
+| IR Lead         | Dante Vandeven (Analyst)  | Coordinates the entire response        |
+| SysAdmin        | Jordan Lee                | Shuts down compromised systems         |
+| Communications  | Jamie Rivera              | Manages internal/external messaging    |
+| Legal           | TBD                       | Assesses reporting requirements        |
+
+---
+
+## 🧭 5. Incident Response Lifecycle
+
+### 🟡 A. Identification  
+- Monitor logs using syslog, IDS, and user reports  
+- Initial indicators: abnormal login times, sudden data transfer spikes, email phishing alerts  
+
+### 🔴 B. Containment  
+- Disable affected user accounts  
+- Isolate compromised systems from the network  
+- Stop ongoing malicious activity (e.g., malware execution)
+
+### 🛠️ C. Eradication  
+- Remove malware or corrupted files  
+- Patch exploited vulnerabilities  
+- Reset passwords and update firewall rules  
+
+### 🔁 D. Recovery  
+- Restore clean backups  
+- Monitor systems closely for 72 hours  
+- Re-enable services gradually with testing  
+
+### 🧾 E. Lessons Learned  
+- Conduct a full post-incident review within 7 days  
+- Update this IRP based on findings  
+- Document what worked and what didn’t
+
+---
+
+## 🗃️ 6. Reporting Template (For Internal Use)
+
+**Incident Name:**  
+**Date/Time Detected:**  
+**Reported By:**  
+**Summary:**  
+**Systems Affected:**  
+**Actions Taken:**  
+**Resolution Status:**  
+**Postmortem Notes:**
+
+---
+
+## ✅ 7. Preventative Measures
+
+- Conduct quarterly phishing simulations  
+- Require MFA for all logins  
+- Keep systems updated (auto-patching enabled)  
+- Weekly security log reviews by internal staff  
+- Role-based access control (RBAC) enforced
+
+---
+
+## 📞 8. Emergency Contacts
+
+- **Dante Vandeven** (IR Lead) – 573-271-1304  
+- **SysAdmin On-Call** – (555) 123-4567  
+- **Local Law Enforcement – Cyber Division** – (816) 000-9111
+
+---
+
+*End of Document*
