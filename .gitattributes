@@ -2,103 +2,199 @@
 
 **Prepared by:** Dante Vandeven  
 **Date:** June 17, 2025  
-**Version:** 1.0
+**Version:** 1.1
 
 ---
 
 ## 📌 1. Overview
 
-This Incident Response Plan (IRP) is designed to provide a structured approach for identifying, responding to, and recovering from cybersecurity incidents at ACME Athletics, a fictional sports technology company focused on athlete data, wearable tech, and performance analytics.
+This Incident Response Plan (IRP) outlines the structured approach ACME Athletics will take to identify, contain, eradicate, and recover from cybersecurity incidents. ACME is a fictional sports technology company that handles sensitive athlete performance data and internal analytics platforms.
 
 ---
 
 ## 🚨 2. Objectives
 
 - Detect and contain security incidents quickly  
-- Minimize damage and recovery time  
-- Maintain trust with athletes, partners, and staff  
-- Document all actions for audit and learning purposes
+- Minimize operational downtime and data loss  
+- Protect athlete and partner trust  
+- Maintain audit trails and continuous improvement
 
 ---
 
 ## 🔐 3. Scope
 
-This plan applies to all ACME Athletics digital assets, including:  
-- Internal servers and cloud infrastructure  
-- Athlete performance databases  
-- Employee email and mobile devices  
-- Partner APIs and third-party services
+Applies to all digital assets including:
+- Internal servers and endpoints  
+- Athlete tracking systems and cloud databases  
+- Company email, mobile devices, and Slack/Zoom integrations  
+- Partner-facing APIs and vendor systems
 
 ---
 
-## 👥 4. Response Team
+## 👥 4. Incident Response Team
 
 | Role            | Name / Title              | Responsibility                        |
 |-----------------|---------------------------|----------------------------------------|
-| IR Lead         | Dante Vandeven (Analyst)  | Coordinates the entire response        |
-| SysAdmin        | Jordan Lee                | Shuts down compromised systems         |
-| Communications  | Jamie Rivera              | Manages internal/external messaging    |
-| Legal           | TBD                       | Assesses reporting requirements        |
+| IR Lead         | Dante Vandeven (Analyst)  | Coordinates incident handling          |
+| SysAdmin        | Jordan Lee                | Infrastructure isolation + support     |
+| Comms           | Jamie Rivera              | Internal & external communication      |
+| Legal Liaison   | TBD                       | Manages legal obligations & reporting  |
 
 ---
 
 ## 🧭 5. Incident Response Lifecycle
 
-### 🟡 A. Identification  
-- Monitor logs using syslog, IDS, and user reports  
-- Initial indicators: abnormal login times, sudden data transfer spikes, email phishing alerts  
+---
 
-### 🔴 B. Containment  
-- Disable affected user accounts  
-- Isolate compromised systems from the network  
-- Stop ongoing malicious activity (e.g., malware execution)
+### 🟡 A. Identification
 
-### 🛠️ C. Eradication  
-- Remove malware or corrupted files  
-- Patch exploited vulnerabilities  
-- Reset passwords and update firewall rules  
-
-### 🔁 D. Recovery  
-- Restore clean backups  
-- Monitor systems closely for 72 hours  
-- Re-enable services gradually with testing  
-
-### 🧾 E. Lessons Learned  
-- Conduct a full post-incident review within 7 days  
-- Update this IRP based on findings  
-- Document what worked and what didn’t
+- Continuous monitoring of:
+  - System logs (`journalctl`, `auth.log`)  
+  - Network activity (via `Wireshark`, `tcpdump`)  
+  - User behavior anomalies
+- Indicators include:
+  - Unusual login times or locations  
+  - Sudden data exfiltration patterns  
+  - Phishing reports from staff
 
 ---
 
-## 🗃️ 6. Reporting Template (For Internal Use)
+### 🔴 B. Containment
 
-**Incident Name:**  
-**Date/Time Detected:**  
-**Reported By:**  
-**Summary:**  
-**Systems Affected:**  
-**Actions Taken:**  
-**Resolution Status:**  
-**Postmortem Notes:**
+**Short-term (immediate response):**
+
+```bash
+# Lock user account
+sudo usermod -L compromised_user
+
+# Kill suspected process
+ps aux | grep suspicious_process  
+sudo kill -9 [PID]
+
+# Quarantine malware file
+mv /home/user/suspicious_file /quarantine/
+
+# Isolate machine from network
+ifconfig eth0 down
+````
+
+**Network-level containment:**
+
+```bash
+# Block IP address
+sudo iptables -A INPUT -s 192.168.88.66 -j DROP
+```
+
+**Preserve evidence before cleanup:**
+
+```bash
+# Create disk image for forensics
+sudo dd if=/dev/sda of=/mnt/forensics/host_image.img bs=1M
+```
 
 ---
 
-## ✅ 7. Preventative Measures
+### 🛠️ C. Eradication
 
-- Conduct quarterly phishing simulations  
-- Require MFA for all logins  
-- Keep systems updated (auto-patching enabled)  
-- Weekly security log reviews by internal staff  
-- Role-based access control (RBAC) enforced
+**Malware removal:**
+
+```bash
+# Install ClamAV and scan system
+sudo apt-get install clamav  
+clamscan -r /home/
+```
+
+**Patch exploited vulnerabilities:**
+
+```bash
+# Example: Apache vulnerability CVE-2021-41773
+sudo apt-get update  
+sudo apt-get install --only-upgrade apache2
+```
+
+**Reset credentials + configs:**
+
+* Rotate API keys, user passwords
+* Review and update IAM policies
+* Reconfigure firewall or VPN settings if compromised
 
 ---
 
-## 📞 8. Emergency Contacts
+### 🔁 D. Recovery
 
-- **Dante Vandeven** (IR Lead) – 573-271-1304  
-- **SysAdmin On-Call** – (555) 123-4567  
-- **Local Law Enforcement – Cyber Division** – (816) 000-9111
+* Restore clean system backups
+* Monitor restored systems closely for 72 hours
+* Gradual reintroduction into production environment
+* Conduct final scans using `nmap` and `netstat` to ensure no remaining exposure
+
+```bash
+# Network check
+netstat -tulpn
+lsof -i
+```
 
 ---
 
-*End of Document*
+### 🧾 E. Lessons Learned
+
+* Full team debrief within 7 days
+* Postmortem report stored in IR database
+* Identify gaps in detection, escalation, or communication
+* Update this IRP as needed
+
+---
+
+## 🗃️ 6. Internal Reporting Template
+
+**Incident Name:**
+**Date/Time Detected:**
+**Detected By:**
+**Systems Affected:**
+**Indicators of Compromise (IOCs):**
+**Steps Taken:**
+**Time to Containment:**
+**Time to Recovery:**
+**Postmortem Summary:**
+
+---
+
+## 🧾 7. Sample Log Review
+
+```log
+Jun 17 14:22:53 server sshd[3421]: Failed password for root from 192.168.1.45 port 55874 ssh2
+```
+
+This log entry shows a brute-force SSH attempt. Multiple attempts from the same IP should trigger:
+
+```bash
+sudo fail2ban-client set sshd banip 192.168.1.45
+```
+
+---
+
+## 🧰 8. Tools Used During This Incident
+
+| Tool      | Purpose                           |
+| --------- | --------------------------------- |
+| Wireshark | Network capture and inspection    |
+| ClamAV    | Malware detection and cleanup     |
+| iptables  | Blocking IPs and ports            |
+| fail2ban  | Auto-banning brute force IPs      |
+| nmap      | Port scanning and service mapping |
+| tcpdump   | CLI packet capture                |
+| dd        | Forensic disk imaging             |
+| netstat   | Live network connections          |
+
+---
+
+## 📞 9. Emergency Contacts
+
+* **IR Lead:** Dante Vandeven – 573-271-1304
+* **SysAdmin On-Call:** Jordan Lee – (555) 123-4567
+* **Cybercrime Division – KCPD:** (816) 000-9111
+
+---
+
+
+
+
